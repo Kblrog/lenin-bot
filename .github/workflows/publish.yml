@@ -1,0 +1,29 @@
+name: Lenin Sarcasm Bot
+
+on:
+  schedule:
+    # Время в UTC! 7:00, 14:00, 18:00 UTC = 10:00, 17:00, 21:00 МСК
+    - cron: '0 7,14,18 * * *'
+  workflow_dispatch:  # позволяет запустить вручную
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run bot
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          NEWS_API_KEY: ${{ secrets.NEWS_API_KEY }}
+          TELEGRAM_CHAT_ID: "@lenin_live_chennel
+        run: python bot.py
